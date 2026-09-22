@@ -5385,9 +5385,13 @@ type StringRules_Address struct {
 }
 
 type StringRules_Uuid struct {
-	// `uuid` specifies that the field value must be a valid UUID as defined by
-	// [RFC 4122](https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.2). If the
-	// field value isn't a valid UUID, an error message will be generated.
+	// `uuid` specifies that the field value must have the textual shape of a
+	// UUID as defined by
+	// [RFC 9562](https://www.rfc-editor.org/rfc/rfc9562#section-4): 32
+	// hexadecimal digits in five dash-separated groups. Only the shape is
+	// enforced, so that UUID versions defined in the future are not rejected:
+	// the version and variant fields are not checked. If the field value isn't
+	// shaped like a UUID, an error message will be generated.
 	//
 	// ```proto
 	//
@@ -5401,10 +5405,13 @@ type StringRules_Uuid struct {
 }
 
 type StringRules_Tuuid struct {
-	// `tuuid` (trimmed UUID) specifies that the field value must be a valid UUID as
-	// defined by [RFC 4122](https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.2) with all dashes
-	// omitted. If the field value isn't a valid UUID without dashes, an error message
-	// will be generated.
+	// `tuuid` (trimmed UUID) specifies that the field value must have the
+	// textual shape of a UUID as defined by
+	// [RFC 9562](https://www.rfc-editor.org/rfc/rfc9562#section-4) with all
+	// dashes omitted: 32 hexadecimal digits. Only the shape is enforced, so
+	// that UUID versions defined in the future are not rejected: the version
+	// and variant fields are not checked. If the field value isn't shaped like
+	// a UUID without dashes, an error message will be generated.
 	//
 	// ```proto
 	//

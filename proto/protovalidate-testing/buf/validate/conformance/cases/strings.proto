@@ -267,3 +267,37 @@ message StringProtobufDotFQN {
 message StringExample {
   string val = 1 [(buf.validate.field).string.example = "foo"];
 }
+
+message StringUUIDTypesV4 {
+  string val = 1 [(buf.validate.field).string.uuid_types = UUID_V4];
+}
+message StringUUIDTypesV4OrV7 {
+  string val = 1 [(buf.validate.field).string = {
+    uuid_types: [
+      UUID_V4,
+      UUID_V7
+    ]
+  }];
+}
+message StringUUIDTypesNilOrMax {
+  string val = 1 [(buf.validate.field).string = {
+    uuid_types: [
+      UUID_NIL,
+      UUID_MAX
+    ]
+  }];
+}
+message StringUUIDTypesEmpty {
+  string val = 1 [(buf.validate.field).string.uuid_types = UUID_UNSPECIFIED];
+}
+message StringTUUIDTypesV4 {
+  string val = 1 [(buf.validate.field).string.tuuid_types = UUID_V4];
+}
+message StringTUUIDTypesV4OrV7 {
+  string val = 1 [(buf.validate.field).string = {
+    tuuid_types: [
+      UUID_V4,
+      UUID_V7
+    ]
+  }];
+}

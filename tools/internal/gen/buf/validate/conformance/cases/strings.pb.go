@@ -2962,6 +2962,270 @@ func (x *StringExample) GetVal() string {
 	return ""
 }
 
+type StringUUIDTypesV4 struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Val           string                 `protobuf:"bytes,1,opt,name=val,proto3" json:"val,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StringUUIDTypesV4) Reset() {
+	*x = StringUUIDTypesV4{}
+	mi := &file_buf_validate_conformance_cases_strings_proto_msgTypes[66]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StringUUIDTypesV4) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StringUUIDTypesV4) ProtoMessage() {}
+
+func (x *StringUUIDTypesV4) ProtoReflect() protoreflect.Message {
+	mi := &file_buf_validate_conformance_cases_strings_proto_msgTypes[66]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StringUUIDTypesV4.ProtoReflect.Descriptor instead.
+func (*StringUUIDTypesV4) Descriptor() ([]byte, []int) {
+	return file_buf_validate_conformance_cases_strings_proto_rawDescGZIP(), []int{66}
+}
+
+func (x *StringUUIDTypesV4) GetVal() string {
+	if x != nil {
+		return x.Val
+	}
+	return ""
+}
+
+type StringUUIDTypesV4OrV7 struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Val           string                 `protobuf:"bytes,1,opt,name=val,proto3" json:"val,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StringUUIDTypesV4OrV7) Reset() {
+	*x = StringUUIDTypesV4OrV7{}
+	mi := &file_buf_validate_conformance_cases_strings_proto_msgTypes[67]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StringUUIDTypesV4OrV7) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StringUUIDTypesV4OrV7) ProtoMessage() {}
+
+func (x *StringUUIDTypesV4OrV7) ProtoReflect() protoreflect.Message {
+	mi := &file_buf_validate_conformance_cases_strings_proto_msgTypes[67]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StringUUIDTypesV4OrV7.ProtoReflect.Descriptor instead.
+func (*StringUUIDTypesV4OrV7) Descriptor() ([]byte, []int) {
+	return file_buf_validate_conformance_cases_strings_proto_rawDescGZIP(), []int{67}
+}
+
+func (x *StringUUIDTypesV4OrV7) GetVal() string {
+	if x != nil {
+		return x.Val
+	}
+	return ""
+}
+
+type StringUUIDTypesNilOrMax struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Val           string                 `protobuf:"bytes,1,opt,name=val,proto3" json:"val,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StringUUIDTypesNilOrMax) Reset() {
+	*x = StringUUIDTypesNilOrMax{}
+	mi := &file_buf_validate_conformance_cases_strings_proto_msgTypes[68]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StringUUIDTypesNilOrMax) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StringUUIDTypesNilOrMax) ProtoMessage() {}
+
+func (x *StringUUIDTypesNilOrMax) ProtoReflect() protoreflect.Message {
+	mi := &file_buf_validate_conformance_cases_strings_proto_msgTypes[68]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StringUUIDTypesNilOrMax.ProtoReflect.Descriptor instead.
+func (*StringUUIDTypesNilOrMax) Descriptor() ([]byte, []int) {
+	return file_buf_validate_conformance_cases_strings_proto_rawDescGZIP(), []int{68}
+}
+
+func (x *StringUUIDTypesNilOrMax) GetVal() string {
+	if x != nil {
+		return x.Val
+	}
+	return ""
+}
+
+type StringUUIDTypesEmpty struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Val           string                 `protobuf:"bytes,1,opt,name=val,proto3" json:"val,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StringUUIDTypesEmpty) Reset() {
+	*x = StringUUIDTypesEmpty{}
+	mi := &file_buf_validate_conformance_cases_strings_proto_msgTypes[69]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StringUUIDTypesEmpty) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StringUUIDTypesEmpty) ProtoMessage() {}
+
+func (x *StringUUIDTypesEmpty) ProtoReflect() protoreflect.Message {
+	mi := &file_buf_validate_conformance_cases_strings_proto_msgTypes[69]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StringUUIDTypesEmpty.ProtoReflect.Descriptor instead.
+func (*StringUUIDTypesEmpty) Descriptor() ([]byte, []int) {
+	return file_buf_validate_conformance_cases_strings_proto_rawDescGZIP(), []int{69}
+}
+
+func (x *StringUUIDTypesEmpty) GetVal() string {
+	if x != nil {
+		return x.Val
+	}
+	return ""
+}
+
+type StringTUUIDTypesV4 struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Val           string                 `protobuf:"bytes,1,opt,name=val,proto3" json:"val,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StringTUUIDTypesV4) Reset() {
+	*x = StringTUUIDTypesV4{}
+	mi := &file_buf_validate_conformance_cases_strings_proto_msgTypes[70]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StringTUUIDTypesV4) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StringTUUIDTypesV4) ProtoMessage() {}
+
+func (x *StringTUUIDTypesV4) ProtoReflect() protoreflect.Message {
+	mi := &file_buf_validate_conformance_cases_strings_proto_msgTypes[70]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StringTUUIDTypesV4.ProtoReflect.Descriptor instead.
+func (*StringTUUIDTypesV4) Descriptor() ([]byte, []int) {
+	return file_buf_validate_conformance_cases_strings_proto_rawDescGZIP(), []int{70}
+}
+
+func (x *StringTUUIDTypesV4) GetVal() string {
+	if x != nil {
+		return x.Val
+	}
+	return ""
+}
+
+type StringTUUIDTypesV4OrV7 struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Val           string                 `protobuf:"bytes,1,opt,name=val,proto3" json:"val,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StringTUUIDTypesV4OrV7) Reset() {
+	*x = StringTUUIDTypesV4OrV7{}
+	mi := &file_buf_validate_conformance_cases_strings_proto_msgTypes[71]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StringTUUIDTypesV4OrV7) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StringTUUIDTypesV4OrV7) ProtoMessage() {}
+
+func (x *StringTUUIDTypesV4OrV7) ProtoReflect() protoreflect.Message {
+	mi := &file_buf_validate_conformance_cases_strings_proto_msgTypes[71]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StringTUUIDTypesV4OrV7.ProtoReflect.Descriptor instead.
+func (*StringTUUIDTypesV4OrV7) Descriptor() ([]byte, []int) {
+	return file_buf_validate_conformance_cases_strings_proto_rawDescGZIP(), []int{71}
+}
+
+func (x *StringTUUIDTypesV4OrV7) GetVal() string {
+	if x != nil {
+		return x.Val
+	}
+	return ""
+}
+
 var File_buf_validate_conformance_cases_strings_proto protoreflect.FileDescriptor
 
 const file_buf_validate_conformance_cases_strings_proto_rawDesc = "" +
@@ -3112,7 +3376,20 @@ const file_buf_validate_conformance_cases_strings_proto_rawDesc = "" +
 	"\x14StringProtobufDotFQN\x12\x1a\n" +
 	"\x03val\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x02\x01R\x03val\".\n" +
 	"\rStringExample\x12\x1d\n" +
-	"\x03val\x18\x01 \x01(\tB\v\xbaH\br\x06\x92\x02\x03fooR\x03valB\xa3\x02\n" +
+	"\x03val\x18\x01 \x01(\tB\v\xbaH\br\x06\x92\x02\x03fooR\x03val\"/\n" +
+	"\x11StringUUIDTypesV4\x12\x1a\n" +
+	"\x03val\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb8\x02\x04R\x03val\"6\n" +
+	"\x15StringUUIDTypesV4OrV7\x12\x1d\n" +
+	"\x03val\x18\x01 \x01(\tB\v\xbaH\br\x06\xb8\x02\x04\xb8\x02\aR\x03val\"8\n" +
+	"\x17StringUUIDTypesNilOrMax\x12\x1d\n" +
+	"\x03val\x18\x01 \x01(\tB\v\xbaH\br\x06\xb8\x02\t\xb8\x02\n" +
+	"R\x03val\"2\n" +
+	"\x14StringUUIDTypesEmpty\x12\x1a\n" +
+	"\x03val\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb8\x02\x00R\x03val\"0\n" +
+	"\x12StringTUUIDTypesV4\x12\x1a\n" +
+	"\x03val\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xc0\x02\x04R\x03val\"7\n" +
+	"\x16StringTUUIDTypesV4OrV7\x12\x1d\n" +
+	"\x03val\x18\x01 \x01(\tB\v\xbaH\br\x06\xc0\x02\x04\xc0\x02\aR\x03valB\xa3\x02\n" +
 	"\"com.buf.validate.conformance.casesB\fStringsProtoP\x01ZSgithub.com/bufbuild/protovalidate/tools/internal/gen/buf/validate/conformance/cases\xa2\x02\x04BVCC\xaa\x02\x1eBuf.Validate.Conformance.Cases\xca\x02\x1eBuf\\Validate\\Conformance\\Cases\xe2\x02*Buf\\Validate\\Conformance\\Cases\\GPBMetadata\xea\x02!Buf::Validate::Conformance::Casesb\x06proto3"
 
 var (
@@ -3127,7 +3404,7 @@ func file_buf_validate_conformance_cases_strings_proto_rawDescGZIP() []byte {
 	return file_buf_validate_conformance_cases_strings_proto_rawDescData
 }
 
-var file_buf_validate_conformance_cases_strings_proto_msgTypes = make([]protoimpl.MessageInfo, 66)
+var file_buf_validate_conformance_cases_strings_proto_msgTypes = make([]protoimpl.MessageInfo, 72)
 var file_buf_validate_conformance_cases_strings_proto_goTypes = []any{
 	(*StringNone)(nil),                 // 0: buf.validate.conformance.cases.StringNone
 	(*StringConst)(nil),                // 1: buf.validate.conformance.cases.StringConst
@@ -3195,6 +3472,12 @@ var file_buf_validate_conformance_cases_strings_proto_goTypes = []any{
 	(*StringProtobufFQN)(nil),          // 63: buf.validate.conformance.cases.StringProtobufFQN
 	(*StringProtobufDotFQN)(nil),       // 64: buf.validate.conformance.cases.StringProtobufDotFQN
 	(*StringExample)(nil),              // 65: buf.validate.conformance.cases.StringExample
+	(*StringUUIDTypesV4)(nil),          // 66: buf.validate.conformance.cases.StringUUIDTypesV4
+	(*StringUUIDTypesV4OrV7)(nil),      // 67: buf.validate.conformance.cases.StringUUIDTypesV4OrV7
+	(*StringUUIDTypesNilOrMax)(nil),    // 68: buf.validate.conformance.cases.StringUUIDTypesNilOrMax
+	(*StringUUIDTypesEmpty)(nil),       // 69: buf.validate.conformance.cases.StringUUIDTypesEmpty
+	(*StringTUUIDTypesV4)(nil),         // 70: buf.validate.conformance.cases.StringTUUIDTypesV4
+	(*StringTUUIDTypesV4OrV7)(nil),     // 71: buf.validate.conformance.cases.StringTUUIDTypesV4OrV7
 }
 var file_buf_validate_conformance_cases_strings_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -3218,7 +3501,7 @@ func file_buf_validate_conformance_cases_strings_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_buf_validate_conformance_cases_strings_proto_rawDesc), len(file_buf_validate_conformance_cases_strings_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   66,
+			NumMessages:   72,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

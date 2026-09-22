@@ -274,6 +274,104 @@ func (KnownRegex) EnumDescriptor() ([]byte, []int) {
 	return file_buf_validate_validate_proto_rawDescGZIP(), []int{1}
 }
 
+// Uuid contains the UUID types defined by
+// [RFC 9562](https://www.rfc-editor.org/rfc/rfc9562#section-4). A versioned UUID
+// carries its version in the first character of the third group and the RFC 9562
+// variant (`8`, `9`, `a` or `b`) in the first character of the fourth group. The
+// Nil and Max UUIDs are special cases that follow neither rule.
+type Uuid int32
+
+const (
+	Uuid_UUID_UNSPECIFIED Uuid = 0
+	// Version 1, a [Gregorian time-based UUID](https://www.rfc-editor.org/rfc/rfc9562#section-5.1).
+	Uuid_UUID_V1 Uuid = 1
+	// Version 2, a [DCE Security UUID](https://www.rfc-editor.org/rfc/rfc9562#section-5.2).
+	Uuid_UUID_V2 Uuid = 2
+	// Version 3, a [name-based UUID using MD5](https://www.rfc-editor.org/rfc/rfc9562#section-5.3).
+	Uuid_UUID_V3 Uuid = 3
+	// Version 4, a [random UUID](https://www.rfc-editor.org/rfc/rfc9562#section-5.4).
+	Uuid_UUID_V4 Uuid = 4
+	// Version 5, a [name-based UUID using SHA-1](https://www.rfc-editor.org/rfc/rfc9562#section-5.5).
+	Uuid_UUID_V5 Uuid = 5
+	// Version 6, a [reordered Gregorian time-based UUID](https://www.rfc-editor.org/rfc/rfc9562#section-5.6).
+	Uuid_UUID_V6 Uuid = 6
+	// Version 7, a [Unix epoch time-based UUID](https://www.rfc-editor.org/rfc/rfc9562#section-5.7).
+	Uuid_UUID_V7 Uuid = 7
+	// Version 8, a [custom UUID](https://www.rfc-editor.org/rfc/rfc9562#section-5.8).
+	Uuid_UUID_V8 Uuid = 8
+	// The [Nil UUID](https://www.rfc-editor.org/rfc/rfc9562#section-5.9), all bits set to zero.
+	Uuid_UUID_NIL Uuid = 9
+	// The [Max UUID](https://www.rfc-editor.org/rfc/rfc9562#section-5.10), all bits set to one.
+	Uuid_UUID_MAX Uuid = 10
+)
+
+// Enum value maps for Uuid.
+var (
+	Uuid_name = map[int32]string{
+		0:  "UUID_UNSPECIFIED",
+		1:  "UUID_V1",
+		2:  "UUID_V2",
+		3:  "UUID_V3",
+		4:  "UUID_V4",
+		5:  "UUID_V5",
+		6:  "UUID_V6",
+		7:  "UUID_V7",
+		8:  "UUID_V8",
+		9:  "UUID_NIL",
+		10: "UUID_MAX",
+	}
+	Uuid_value = map[string]int32{
+		"UUID_UNSPECIFIED": 0,
+		"UUID_V1":          1,
+		"UUID_V2":          2,
+		"UUID_V3":          3,
+		"UUID_V4":          4,
+		"UUID_V5":          5,
+		"UUID_V6":          6,
+		"UUID_V7":          7,
+		"UUID_V8":          8,
+		"UUID_NIL":         9,
+		"UUID_MAX":         10,
+	}
+)
+
+func (x Uuid) Enum() *Uuid {
+	p := new(Uuid)
+	*p = x
+	return p
+}
+
+func (x Uuid) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (Uuid) Descriptor() protoreflect.EnumDescriptor {
+	return file_buf_validate_validate_proto_enumTypes[2].Descriptor()
+}
+
+func (Uuid) Type() protoreflect.EnumType {
+	return &file_buf_validate_validate_proto_enumTypes[2]
+}
+
+func (x Uuid) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *Uuid) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = Uuid(num)
+	return nil
+}
+
+// Deprecated: Use Uuid.Descriptor instead.
+func (Uuid) EnumDescriptor() ([]byte, []int) {
+	return file_buf_validate_validate_proto_rawDescGZIP(), []int{2}
+}
+
 // `Rule` represents a validation rule written in the Common Expression
 // Language (CEL) syntax. Each Rule includes a unique identifier, an
 // optional error message, and the CEL expression to evaluate. For more
@@ -4859,6 +4957,43 @@ type StringRules struct {
 	//
 	// ```
 	Strict *bool `protobuf:"varint,25,opt,name=strict" json:"strict,omitempty"`
+	// `uuid_types` specifies that the field value must be a UUID of one of the
+	// listed types. Unlike `uuid`, which only enforces the textual shape, this
+	// checks the version and the variant fields defined by
+	// [RFC 9562](https://www.rfc-editor.org/rfc/rfc9562#section-4): a versioned
+	// UUID must carry the RFC 9562 variant (`8`, `9`, `a` or `b`), while the Nil
+	// and Max UUIDs follow neither rule. An empty list means no restriction. If the
+	// field value isn't a UUID of a listed type, an error message will be
+	// generated.
+	//
+	// ```proto
+	//
+	//	message MyString {
+	//	  // must be a UUIDv4
+	//	  string value = 1 [(buf.validate.field).string.uuid_types = UUID_V4];
+	//
+	//	  // must be a UUIDv4 or a UUIDv7
+	//	  string reference_id = 2 [(buf.validate.field).string = {uuid_types: [UUID_V4, UUID_V7]}];
+	//	}
+	//
+	// ```
+	UuidTypes []Uuid `protobuf:"varint,39,rep,name=uuid_types,json=uuidTypes,enum=buf.validate.Uuid" json:"uuid_types,omitempty"`
+	// `tuuid_types` specifies that the field value must be a trimmed UUID, that is
+	// a UUID with all dashes omitted, of one of the listed types. It is the
+	// `uuid_types` rule applied to the trimmed form: the version and the variant
+	// fields are checked, and an empty list means no restriction. If the field
+	// value isn't a trimmed UUID of a listed type, an error message will be
+	// generated.
+	//
+	// ```proto
+	//
+	//	message MyString {
+	//	  // must be a trimmed UUIDv4
+	//	  string value = 1 [(buf.validate.field).string.tuuid_types = UUID_V4];
+	//	}
+	//
+	// ```
+	TuuidTypes []Uuid `protobuf:"varint,40,rep,name=tuuid_types,json=tuuidTypes,enum=buf.validate.Uuid" json:"tuuid_types,omitempty"`
 	// `example` specifies values that the field may have. These values SHOULD
 	// conform to other rules. `example` values will not impact validation
 	// but may be used as helpful guidance on how to populate the given field.
@@ -5210,6 +5345,20 @@ func (x *StringRules) GetStrict() bool {
 	return false
 }
 
+func (x *StringRules) GetUuidTypes() []Uuid {
+	if x != nil {
+		return x.UuidTypes
+	}
+	return nil
+}
+
+func (x *StringRules) GetTuuidTypes() []Uuid {
+	if x != nil {
+		return x.TuuidTypes
+	}
+	return nil
+}
+
 func (x *StringRules) GetExample() []string {
 	if x != nil {
 		return x.Example
@@ -5390,8 +5539,9 @@ type StringRules_Uuid struct {
 	// [RFC 9562](https://datatracker.ietf.org/doc/html/rfc9562#section-4): 32
 	// hexadecimal digits in five dash-separated groups. Only the shape is
 	// enforced, so that UUID versions defined in the future are not rejected:
-	// the version and variant fields are not checked. If the field value isn't
-	// shaped like a UUID, an error message will be generated.
+	// the version and variant fields are not checked. Use `uuid_types` to
+	// restrict the value to specific versions. If the field value isn't shaped
+	// like a UUID, an error message will be generated.
 	//
 	// ```proto
 	//
@@ -5410,8 +5560,9 @@ type StringRules_Tuuid struct {
 	// [RFC 9562](https://datatracker.ietf.org/doc/html/rfc9562#section-4) with all
 	// dashes omitted: 32 hexadecimal digits. Only the shape is enforced, so
 	// that UUID versions defined in the future are not rejected: the version
-	// and variant fields are not checked. If the field value isn't shaped like
-	// a UUID without dashes, an error message will be generated.
+	// and variant fields are not checked. Use `tuuid_types` to restrict the
+	// value to specific versions. If the field value isn't shaped like a UUID
+	// without dashes, an error message will be generated.
 	//
 	// ```proto
 	//
@@ -8467,7 +8618,7 @@ const file_buf_validate_validate_proto_rawDesc = "" +
 	"bool.const\x1aZthis != getField(rules, 'const') ? 'must equal %s'.format([getField(rules, 'const')]) : ''R\x05const\x123\n" +
 	"\aexample\x18\x02 \x03(\bB\x19\xc2H\x16\n" +
 	"\x14\n" +
-	"\fbool.example\x1a\x04trueR\aexample*\t\b\xe8\a\x10\x80\x80\x80\x80\x02\"\xcf?\n" +
+	"\fbool.example\x1a\x04trueR\aexample*\t\b\xe8\a\x10\x80\x80\x80\x80\x02\"\x83H\n" +
 	"\vStringRules\x12\x87\x01\n" +
 	"\x05const\x18\x01 \x01(\tBq\xc2Hn\n" +
 	"l\n" +
@@ -8621,7 +8772,19 @@ const file_buf_validate_validate_proto_rawDesc = "" +
 	")string.well_known_regex.header_name_empty\x125value is empty, which is not a valid HTTP header name\x1a)rules.well_known_regex != 1 || this != ''\n" +
 	"\xe1\x01\n" +
 	"$string.well_known_regex.header_value\x12!must be a valid HTTP header value\x1a\x95\x01rules.well_known_regex != 2 || this.matches(!has(rules.strict) || rules.strict ?'^[^\\u0000-\\u0008\\u000A-\\u001F\\u007F]*$' :'^[^\\u0000\\u000A\\u000D]*$')H\x00R\x0ewellKnownRegex\x12\x16\n" +
-	"\x06strict\x18\x19 \x01(\bR\x06strict\x125\n" +
+	"\x06strict\x18\x19 \x01(\bR\x06strict\x12\xb5\x04\n" +
+	"\n" +
+	"uuid_types\x18' \x03(\x0e2\x12.buf.validate.UuidB\x81\x04\xc2H\xfd\x03\n" +
+	"\x88\x03\n" +
+	"\x11string.uuid_types\x12!must be a UUID of an allowed type\x1a\xcf\x02rules.uuid_types.size() == 0 || this == '' || rules.uuid_types.exists(t,t == 9 ? this.matches('^0{8}-0{4}-0{4}-0{4}-0{12}$') :t == 10 ? this.matches('^[fF]{8}-[fF]{4}-[fF]{4}-[fF]{4}-[fF]{12}$') :t >= 1 && t <= 8 && this.matches('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-' + string(t) + '[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$'))\n" +
+	"p\n" +
+	"\x17string.uuid_types_empty\x12)value is empty, which is not a valid UUID\x1a*rules.uuid_types.size() == 0 || this != ''R\tuuidTypes\x12\xf9\x03\n" +
+	"\vtuuid_types\x18( \x03(\x0e2\x12.buf.validate.UuidB\xc3\x03\xc2H\xbf\x03\n" +
+	"\xc0\x02\n" +
+	"\x12string.tuuid_types\x12)must be a trimmed UUID of an allowed type\x1a\xfe\x01rules.tuuid_types.size() == 0 || this == '' || rules.tuuid_types.exists(t,t == 9 ? this.matches('^0{32}$') :t == 10 ? this.matches('^[fF]{32}$') :t >= 1 && t <= 8 && this.matches('^[0-9a-fA-F]{12}' + string(t) + '[0-9a-fA-F]{3}[89abAB][0-9a-fA-F]{15}$'))\n" +
+	"z\n" +
+	"\x18string.tuuid_types_empty\x121value is empty, which is not a valid trimmed UUID\x1a+rules.tuuid_types.size() == 0 || this != ''R\n" +
+	"tuuidTypes\x125\n" +
 	"\aexample\x18\" \x03(\tB\x1b\xc2H\x18\n" +
 	"\x16\n" +
 	"\x0estring.example\x1a\x04trueR\aexample*\t\b\xe8\a\x10\x80\x80\x80\x80\x02B\f\n" +
@@ -8868,7 +9031,20 @@ const file_buf_validate_validate_proto_rawDesc = "" +
 	"KnownRegex\x12\x1b\n" +
 	"\x17KNOWN_REGEX_UNSPECIFIED\x10\x00\x12 \n" +
 	"\x1cKNOWN_REGEX_HTTP_HEADER_NAME\x10\x01\x12!\n" +
-	"\x1dKNOWN_REGEX_HTTP_HEADER_VALUE\x10\x02:V\n" +
+	"\x1dKNOWN_REGEX_HTTP_HEADER_VALUE\x10\x02*\xa0\x01\n" +
+	"\x04Uuid\x12\x14\n" +
+	"\x10UUID_UNSPECIFIED\x10\x00\x12\v\n" +
+	"\aUUID_V1\x10\x01\x12\v\n" +
+	"\aUUID_V2\x10\x02\x12\v\n" +
+	"\aUUID_V3\x10\x03\x12\v\n" +
+	"\aUUID_V4\x10\x04\x12\v\n" +
+	"\aUUID_V5\x10\x05\x12\v\n" +
+	"\aUUID_V6\x10\x06\x12\v\n" +
+	"\aUUID_V7\x10\a\x12\v\n" +
+	"\aUUID_V8\x10\b\x12\f\n" +
+	"\bUUID_NIL\x10\t\x12\f\n" +
+	"\bUUID_MAX\x10\n" +
+	":V\n" +
 	"\amessage\x12\x1f.google.protobuf.MessageOptions\x18\x87\t \x01(\v2\x1a.buf.validate.MessageRulesR\amessage:N\n" +
 	"\x05oneof\x12\x1d.google.protobuf.OneofOptions\x18\x87\t \x01(\v2\x18.buf.validate.OneofRulesR\x05oneof:N\n" +
 	"\x05field\x12\x1d.google.protobuf.FieldOptions\x18\x87\t \x01(\v2\x18.buf.validate.FieldRulesR\x05field:]\n" +
@@ -8889,120 +9065,123 @@ func file_buf_validate_validate_proto_rawDescGZIP() []byte {
 	return file_buf_validate_validate_proto_rawDescData
 }
 
-var file_buf_validate_validate_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_buf_validate_validate_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
 var file_buf_validate_validate_proto_msgTypes = make([]protoimpl.MessageInfo, 32)
 var file_buf_validate_validate_proto_goTypes = []any{
 	(Ignore)(0),                                 // 0: buf.validate.Ignore
 	(KnownRegex)(0),                             // 1: buf.validate.KnownRegex
-	(*Rule)(nil),                                // 2: buf.validate.Rule
-	(*MessageRules)(nil),                        // 3: buf.validate.MessageRules
-	(*MessageOneofRule)(nil),                    // 4: buf.validate.MessageOneofRule
-	(*OneofRules)(nil),                          // 5: buf.validate.OneofRules
-	(*FieldRules)(nil),                          // 6: buf.validate.FieldRules
-	(*PredefinedRules)(nil),                     // 7: buf.validate.PredefinedRules
-	(*FloatRules)(nil),                          // 8: buf.validate.FloatRules
-	(*DoubleRules)(nil),                         // 9: buf.validate.DoubleRules
-	(*Int32Rules)(nil),                          // 10: buf.validate.Int32Rules
-	(*Int64Rules)(nil),                          // 11: buf.validate.Int64Rules
-	(*UInt32Rules)(nil),                         // 12: buf.validate.UInt32Rules
-	(*UInt64Rules)(nil),                         // 13: buf.validate.UInt64Rules
-	(*SInt32Rules)(nil),                         // 14: buf.validate.SInt32Rules
-	(*SInt64Rules)(nil),                         // 15: buf.validate.SInt64Rules
-	(*Fixed32Rules)(nil),                        // 16: buf.validate.Fixed32Rules
-	(*Fixed64Rules)(nil),                        // 17: buf.validate.Fixed64Rules
-	(*SFixed32Rules)(nil),                       // 18: buf.validate.SFixed32Rules
-	(*SFixed64Rules)(nil),                       // 19: buf.validate.SFixed64Rules
-	(*BoolRules)(nil),                           // 20: buf.validate.BoolRules
-	(*StringRules)(nil),                         // 21: buf.validate.StringRules
-	(*BytesRules)(nil),                          // 22: buf.validate.BytesRules
-	(*EnumRules)(nil),                           // 23: buf.validate.EnumRules
-	(*RepeatedRules)(nil),                       // 24: buf.validate.RepeatedRules
-	(*MapRules)(nil),                            // 25: buf.validate.MapRules
-	(*AnyRules)(nil),                            // 26: buf.validate.AnyRules
-	(*DurationRules)(nil),                       // 27: buf.validate.DurationRules
-	(*FieldMaskRules)(nil),                      // 28: buf.validate.FieldMaskRules
-	(*TimestampRules)(nil),                      // 29: buf.validate.TimestampRules
-	(*Violations)(nil),                          // 30: buf.validate.Violations
-	(*Violation)(nil),                           // 31: buf.validate.Violation
-	(*FieldPath)(nil),                           // 32: buf.validate.FieldPath
-	(*FieldPathElement)(nil),                    // 33: buf.validate.FieldPathElement
-	(*durationpb.Duration)(nil),                 // 34: google.protobuf.Duration
-	(*fieldmaskpb.FieldMask)(nil),               // 35: google.protobuf.FieldMask
-	(*timestamppb.Timestamp)(nil),               // 36: google.protobuf.Timestamp
-	(descriptorpb.FieldDescriptorProto_Type)(0), // 37: google.protobuf.FieldDescriptorProto.Type
-	(*descriptorpb.MessageOptions)(nil),         // 38: google.protobuf.MessageOptions
-	(*descriptorpb.OneofOptions)(nil),           // 39: google.protobuf.OneofOptions
-	(*descriptorpb.FieldOptions)(nil),           // 40: google.protobuf.FieldOptions
+	(Uuid)(0),                                   // 2: buf.validate.Uuid
+	(*Rule)(nil),                                // 3: buf.validate.Rule
+	(*MessageRules)(nil),                        // 4: buf.validate.MessageRules
+	(*MessageOneofRule)(nil),                    // 5: buf.validate.MessageOneofRule
+	(*OneofRules)(nil),                          // 6: buf.validate.OneofRules
+	(*FieldRules)(nil),                          // 7: buf.validate.FieldRules
+	(*PredefinedRules)(nil),                     // 8: buf.validate.PredefinedRules
+	(*FloatRules)(nil),                          // 9: buf.validate.FloatRules
+	(*DoubleRules)(nil),                         // 10: buf.validate.DoubleRules
+	(*Int32Rules)(nil),                          // 11: buf.validate.Int32Rules
+	(*Int64Rules)(nil),                          // 12: buf.validate.Int64Rules
+	(*UInt32Rules)(nil),                         // 13: buf.validate.UInt32Rules
+	(*UInt64Rules)(nil),                         // 14: buf.validate.UInt64Rules
+	(*SInt32Rules)(nil),                         // 15: buf.validate.SInt32Rules
+	(*SInt64Rules)(nil),                         // 16: buf.validate.SInt64Rules
+	(*Fixed32Rules)(nil),                        // 17: buf.validate.Fixed32Rules
+	(*Fixed64Rules)(nil),                        // 18: buf.validate.Fixed64Rules
+	(*SFixed32Rules)(nil),                       // 19: buf.validate.SFixed32Rules
+	(*SFixed64Rules)(nil),                       // 20: buf.validate.SFixed64Rules
+	(*BoolRules)(nil),                           // 21: buf.validate.BoolRules
+	(*StringRules)(nil),                         // 22: buf.validate.StringRules
+	(*BytesRules)(nil),                          // 23: buf.validate.BytesRules
+	(*EnumRules)(nil),                           // 24: buf.validate.EnumRules
+	(*RepeatedRules)(nil),                       // 25: buf.validate.RepeatedRules
+	(*MapRules)(nil),                            // 26: buf.validate.MapRules
+	(*AnyRules)(nil),                            // 27: buf.validate.AnyRules
+	(*DurationRules)(nil),                       // 28: buf.validate.DurationRules
+	(*FieldMaskRules)(nil),                      // 29: buf.validate.FieldMaskRules
+	(*TimestampRules)(nil),                      // 30: buf.validate.TimestampRules
+	(*Violations)(nil),                          // 31: buf.validate.Violations
+	(*Violation)(nil),                           // 32: buf.validate.Violation
+	(*FieldPath)(nil),                           // 33: buf.validate.FieldPath
+	(*FieldPathElement)(nil),                    // 34: buf.validate.FieldPathElement
+	(*durationpb.Duration)(nil),                 // 35: google.protobuf.Duration
+	(*fieldmaskpb.FieldMask)(nil),               // 36: google.protobuf.FieldMask
+	(*timestamppb.Timestamp)(nil),               // 37: google.protobuf.Timestamp
+	(descriptorpb.FieldDescriptorProto_Type)(0), // 38: google.protobuf.FieldDescriptorProto.Type
+	(*descriptorpb.MessageOptions)(nil),         // 39: google.protobuf.MessageOptions
+	(*descriptorpb.OneofOptions)(nil),           // 40: google.protobuf.OneofOptions
+	(*descriptorpb.FieldOptions)(nil),           // 41: google.protobuf.FieldOptions
 }
 var file_buf_validate_validate_proto_depIdxs = []int32{
-	2,  // 0: buf.validate.MessageRules.cel:type_name -> buf.validate.Rule
-	4,  // 1: buf.validate.MessageRules.oneof:type_name -> buf.validate.MessageOneofRule
-	2,  // 2: buf.validate.FieldRules.cel:type_name -> buf.validate.Rule
+	3,  // 0: buf.validate.MessageRules.cel:type_name -> buf.validate.Rule
+	5,  // 1: buf.validate.MessageRules.oneof:type_name -> buf.validate.MessageOneofRule
+	3,  // 2: buf.validate.FieldRules.cel:type_name -> buf.validate.Rule
 	0,  // 3: buf.validate.FieldRules.ignore:type_name -> buf.validate.Ignore
-	8,  // 4: buf.validate.FieldRules.float:type_name -> buf.validate.FloatRules
-	9,  // 5: buf.validate.FieldRules.double:type_name -> buf.validate.DoubleRules
-	10, // 6: buf.validate.FieldRules.int32:type_name -> buf.validate.Int32Rules
-	11, // 7: buf.validate.FieldRules.int64:type_name -> buf.validate.Int64Rules
-	12, // 8: buf.validate.FieldRules.uint32:type_name -> buf.validate.UInt32Rules
-	13, // 9: buf.validate.FieldRules.uint64:type_name -> buf.validate.UInt64Rules
-	14, // 10: buf.validate.FieldRules.sint32:type_name -> buf.validate.SInt32Rules
-	15, // 11: buf.validate.FieldRules.sint64:type_name -> buf.validate.SInt64Rules
-	16, // 12: buf.validate.FieldRules.fixed32:type_name -> buf.validate.Fixed32Rules
-	17, // 13: buf.validate.FieldRules.fixed64:type_name -> buf.validate.Fixed64Rules
-	18, // 14: buf.validate.FieldRules.sfixed32:type_name -> buf.validate.SFixed32Rules
-	19, // 15: buf.validate.FieldRules.sfixed64:type_name -> buf.validate.SFixed64Rules
-	20, // 16: buf.validate.FieldRules.bool:type_name -> buf.validate.BoolRules
-	21, // 17: buf.validate.FieldRules.string:type_name -> buf.validate.StringRules
-	22, // 18: buf.validate.FieldRules.bytes:type_name -> buf.validate.BytesRules
-	23, // 19: buf.validate.FieldRules.enum:type_name -> buf.validate.EnumRules
-	24, // 20: buf.validate.FieldRules.repeated:type_name -> buf.validate.RepeatedRules
-	25, // 21: buf.validate.FieldRules.map:type_name -> buf.validate.MapRules
-	26, // 22: buf.validate.FieldRules.any:type_name -> buf.validate.AnyRules
-	27, // 23: buf.validate.FieldRules.duration:type_name -> buf.validate.DurationRules
-	28, // 24: buf.validate.FieldRules.field_mask:type_name -> buf.validate.FieldMaskRules
-	29, // 25: buf.validate.FieldRules.timestamp:type_name -> buf.validate.TimestampRules
-	2,  // 26: buf.validate.PredefinedRules.cel:type_name -> buf.validate.Rule
+	9,  // 4: buf.validate.FieldRules.float:type_name -> buf.validate.FloatRules
+	10, // 5: buf.validate.FieldRules.double:type_name -> buf.validate.DoubleRules
+	11, // 6: buf.validate.FieldRules.int32:type_name -> buf.validate.Int32Rules
+	12, // 7: buf.validate.FieldRules.int64:type_name -> buf.validate.Int64Rules
+	13, // 8: buf.validate.FieldRules.uint32:type_name -> buf.validate.UInt32Rules
+	14, // 9: buf.validate.FieldRules.uint64:type_name -> buf.validate.UInt64Rules
+	15, // 10: buf.validate.FieldRules.sint32:type_name -> buf.validate.SInt32Rules
+	16, // 11: buf.validate.FieldRules.sint64:type_name -> buf.validate.SInt64Rules
+	17, // 12: buf.validate.FieldRules.fixed32:type_name -> buf.validate.Fixed32Rules
+	18, // 13: buf.validate.FieldRules.fixed64:type_name -> buf.validate.Fixed64Rules
+	19, // 14: buf.validate.FieldRules.sfixed32:type_name -> buf.validate.SFixed32Rules
+	20, // 15: buf.validate.FieldRules.sfixed64:type_name -> buf.validate.SFixed64Rules
+	21, // 16: buf.validate.FieldRules.bool:type_name -> buf.validate.BoolRules
+	22, // 17: buf.validate.FieldRules.string:type_name -> buf.validate.StringRules
+	23, // 18: buf.validate.FieldRules.bytes:type_name -> buf.validate.BytesRules
+	24, // 19: buf.validate.FieldRules.enum:type_name -> buf.validate.EnumRules
+	25, // 20: buf.validate.FieldRules.repeated:type_name -> buf.validate.RepeatedRules
+	26, // 21: buf.validate.FieldRules.map:type_name -> buf.validate.MapRules
+	27, // 22: buf.validate.FieldRules.any:type_name -> buf.validate.AnyRules
+	28, // 23: buf.validate.FieldRules.duration:type_name -> buf.validate.DurationRules
+	29, // 24: buf.validate.FieldRules.field_mask:type_name -> buf.validate.FieldMaskRules
+	30, // 25: buf.validate.FieldRules.timestamp:type_name -> buf.validate.TimestampRules
+	3,  // 26: buf.validate.PredefinedRules.cel:type_name -> buf.validate.Rule
 	1,  // 27: buf.validate.StringRules.well_known_regex:type_name -> buf.validate.KnownRegex
-	6,  // 28: buf.validate.RepeatedRules.items:type_name -> buf.validate.FieldRules
-	6,  // 29: buf.validate.MapRules.keys:type_name -> buf.validate.FieldRules
-	6,  // 30: buf.validate.MapRules.values:type_name -> buf.validate.FieldRules
-	34, // 31: buf.validate.DurationRules.const:type_name -> google.protobuf.Duration
-	34, // 32: buf.validate.DurationRules.lt:type_name -> google.protobuf.Duration
-	34, // 33: buf.validate.DurationRules.lte:type_name -> google.protobuf.Duration
-	34, // 34: buf.validate.DurationRules.gt:type_name -> google.protobuf.Duration
-	34, // 35: buf.validate.DurationRules.gte:type_name -> google.protobuf.Duration
-	34, // 36: buf.validate.DurationRules.in:type_name -> google.protobuf.Duration
-	34, // 37: buf.validate.DurationRules.not_in:type_name -> google.protobuf.Duration
-	34, // 38: buf.validate.DurationRules.example:type_name -> google.protobuf.Duration
-	35, // 39: buf.validate.FieldMaskRules.const:type_name -> google.protobuf.FieldMask
-	35, // 40: buf.validate.FieldMaskRules.example:type_name -> google.protobuf.FieldMask
-	36, // 41: buf.validate.TimestampRules.const:type_name -> google.protobuf.Timestamp
-	36, // 42: buf.validate.TimestampRules.lt:type_name -> google.protobuf.Timestamp
-	36, // 43: buf.validate.TimestampRules.lte:type_name -> google.protobuf.Timestamp
-	36, // 44: buf.validate.TimestampRules.gt:type_name -> google.protobuf.Timestamp
-	36, // 45: buf.validate.TimestampRules.gte:type_name -> google.protobuf.Timestamp
-	34, // 46: buf.validate.TimestampRules.within:type_name -> google.protobuf.Duration
-	36, // 47: buf.validate.TimestampRules.example:type_name -> google.protobuf.Timestamp
-	31, // 48: buf.validate.Violations.violations:type_name -> buf.validate.Violation
-	32, // 49: buf.validate.Violation.field:type_name -> buf.validate.FieldPath
-	32, // 50: buf.validate.Violation.rule:type_name -> buf.validate.FieldPath
-	33, // 51: buf.validate.FieldPath.elements:type_name -> buf.validate.FieldPathElement
-	37, // 52: buf.validate.FieldPathElement.field_type:type_name -> google.protobuf.FieldDescriptorProto.Type
-	37, // 53: buf.validate.FieldPathElement.key_type:type_name -> google.protobuf.FieldDescriptorProto.Type
-	37, // 54: buf.validate.FieldPathElement.value_type:type_name -> google.protobuf.FieldDescriptorProto.Type
-	38, // 55: buf.validate.message:extendee -> google.protobuf.MessageOptions
-	39, // 56: buf.validate.oneof:extendee -> google.protobuf.OneofOptions
-	40, // 57: buf.validate.field:extendee -> google.protobuf.FieldOptions
-	40, // 58: buf.validate.predefined:extendee -> google.protobuf.FieldOptions
-	3,  // 59: buf.validate.message:type_name -> buf.validate.MessageRules
-	5,  // 60: buf.validate.oneof:type_name -> buf.validate.OneofRules
-	6,  // 61: buf.validate.field:type_name -> buf.validate.FieldRules
-	7,  // 62: buf.validate.predefined:type_name -> buf.validate.PredefinedRules
-	63, // [63:63] is the sub-list for method output_type
-	63, // [63:63] is the sub-list for method input_type
-	59, // [59:63] is the sub-list for extension type_name
-	55, // [55:59] is the sub-list for extension extendee
-	0,  // [0:55] is the sub-list for field type_name
+	2,  // 28: buf.validate.StringRules.uuid_types:type_name -> buf.validate.Uuid
+	2,  // 29: buf.validate.StringRules.tuuid_types:type_name -> buf.validate.Uuid
+	7,  // 30: buf.validate.RepeatedRules.items:type_name -> buf.validate.FieldRules
+	7,  // 31: buf.validate.MapRules.keys:type_name -> buf.validate.FieldRules
+	7,  // 32: buf.validate.MapRules.values:type_name -> buf.validate.FieldRules
+	35, // 33: buf.validate.DurationRules.const:type_name -> google.protobuf.Duration
+	35, // 34: buf.validate.DurationRules.lt:type_name -> google.protobuf.Duration
+	35, // 35: buf.validate.DurationRules.lte:type_name -> google.protobuf.Duration
+	35, // 36: buf.validate.DurationRules.gt:type_name -> google.protobuf.Duration
+	35, // 37: buf.validate.DurationRules.gte:type_name -> google.protobuf.Duration
+	35, // 38: buf.validate.DurationRules.in:type_name -> google.protobuf.Duration
+	35, // 39: buf.validate.DurationRules.not_in:type_name -> google.protobuf.Duration
+	35, // 40: buf.validate.DurationRules.example:type_name -> google.protobuf.Duration
+	36, // 41: buf.validate.FieldMaskRules.const:type_name -> google.protobuf.FieldMask
+	36, // 42: buf.validate.FieldMaskRules.example:type_name -> google.protobuf.FieldMask
+	37, // 43: buf.validate.TimestampRules.const:type_name -> google.protobuf.Timestamp
+	37, // 44: buf.validate.TimestampRules.lt:type_name -> google.protobuf.Timestamp
+	37, // 45: buf.validate.TimestampRules.lte:type_name -> google.protobuf.Timestamp
+	37, // 46: buf.validate.TimestampRules.gt:type_name -> google.protobuf.Timestamp
+	37, // 47: buf.validate.TimestampRules.gte:type_name -> google.protobuf.Timestamp
+	35, // 48: buf.validate.TimestampRules.within:type_name -> google.protobuf.Duration
+	37, // 49: buf.validate.TimestampRules.example:type_name -> google.protobuf.Timestamp
+	32, // 50: buf.validate.Violations.violations:type_name -> buf.validate.Violation
+	33, // 51: buf.validate.Violation.field:type_name -> buf.validate.FieldPath
+	33, // 52: buf.validate.Violation.rule:type_name -> buf.validate.FieldPath
+	34, // 53: buf.validate.FieldPath.elements:type_name -> buf.validate.FieldPathElement
+	38, // 54: buf.validate.FieldPathElement.field_type:type_name -> google.protobuf.FieldDescriptorProto.Type
+	38, // 55: buf.validate.FieldPathElement.key_type:type_name -> google.protobuf.FieldDescriptorProto.Type
+	38, // 56: buf.validate.FieldPathElement.value_type:type_name -> google.protobuf.FieldDescriptorProto.Type
+	39, // 57: buf.validate.message:extendee -> google.protobuf.MessageOptions
+	40, // 58: buf.validate.oneof:extendee -> google.protobuf.OneofOptions
+	41, // 59: buf.validate.field:extendee -> google.protobuf.FieldOptions
+	41, // 60: buf.validate.predefined:extendee -> google.protobuf.FieldOptions
+	4,  // 61: buf.validate.message:type_name -> buf.validate.MessageRules
+	6,  // 62: buf.validate.oneof:type_name -> buf.validate.OneofRules
+	7,  // 63: buf.validate.field:type_name -> buf.validate.FieldRules
+	8,  // 64: buf.validate.predefined:type_name -> buf.validate.PredefinedRules
+	65, // [65:65] is the sub-list for method output_type
+	65, // [65:65] is the sub-list for method input_type
+	61, // [61:65] is the sub-list for extension type_name
+	57, // [57:61] is the sub-list for extension extendee
+	0,  // [0:57] is the sub-list for field type_name
 }
 
 func init() { file_buf_validate_validate_proto_init() }
@@ -9161,7 +9340,7 @@ func file_buf_validate_validate_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_buf_validate_validate_proto_rawDesc), len(file_buf_validate_validate_proto_rawDesc)),
-			NumEnums:      2,
+			NumEnums:      3,
 			NumMessages:   32,
 			NumExtensions: 4,
 			NumServices:   0,

@@ -3481,8 +3481,9 @@ message StringRules {
     // [RFC 9562](https://datatracker.ietf.org/doc/html/rfc9562#section-4): 32
     // hexadecimal digits in five dash-separated groups. Only the shape is
     // enforced, so that UUID versions defined in the future are not rejected:
-    // the version and variant fields are not checked. If the field value isn't
-    // shaped like a UUID, an error message will be generated.
+    // the version and variant fields are not checked. Use `uuid_types` to
+    // restrict the value to specific versions. If the field value isn't shaped
+    // like a UUID, an error message will be generated.
     //
     // ```proto
     // message MyString {
@@ -3508,8 +3509,9 @@ message StringRules {
     // [RFC 9562](https://datatracker.ietf.org/doc/html/rfc9562#section-4) with all
     // dashes omitted: 32 hexadecimal digits. Only the shape is enforced, so
     // that UUID versions defined in the future are not rejected: the version
-    // and variant fields are not checked. If the field value isn't shaped like
-    // a UUID without dashes, an error message will be generated.
+    // and variant fields are not checked. Use `tuuid_types` to restrict the
+    // value to specific versions. If the field value isn't shaped like a UUID
+    // without dashes, an error message will be generated.
     //
     // ```proto
     // message MyString {
@@ -3868,6 +3870,71 @@ message StringRules {
   // ```
   optional bool strict = 25;
 
+  // `uuid_types` specifies that the field value must be a UUID of one of the
+  // listed types. Unlike `uuid`, which only enforces the textual shape, this
+  // checks the version and the variant fields defined by
+  // [RFC 9562](https://www.rfc-editor.org/rfc/rfc9562#section-4): a versioned
+  // UUID must carry the RFC 9562 variant (`8`, `9`, `a` or `b`), while the Nil
+  // and Max UUIDs follow neither rule. An empty list means no restriction. If the
+  // field value isn't a UUID of a listed type, an error message will be
+  // generated.
+  //
+  // ```proto
+  // message MyString {
+  //   // must be a UUIDv4
+  //   string value = 1 [(buf.validate.field).string.uuid_types = UUID_V4];
+  //
+  //   // must be a UUIDv4 or a UUIDv7
+  //   string reference_id = 2 [(buf.validate.field).string = {uuid_types: [UUID_V4, UUID_V7]}];
+  // }
+  // ```
+  repeated Uuid uuid_types = 39 [
+    (predefined).cel = {
+      id: "string.uuid_types"
+      message: "must be a UUID of an allowed type"
+      expression:
+        "rules.uuid_types.size() == 0 || this == '' || rules.uuid_types.exists(t,"
+        "t == 9 ? this.matches('^0{8}-0{4}-0{4}-0{4}-0{12}$') :"
+        "t == 10 ? this.matches('^[fF]{8}-[fF]{4}-[fF]{4}-[fF]{4}-[fF]{12}$') :"
+        "t >= 1 && t <= 8 && this.matches('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-' + string(t) + '[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$'))"
+    },
+    (predefined).cel = {
+      id: "string.uuid_types_empty"
+      message: "value is empty, which is not a valid UUID"
+      expression: "rules.uuid_types.size() == 0 || this != ''"
+    }
+  ];
+
+  // `tuuid_types` specifies that the field value must be a trimmed UUID, that is
+  // a UUID with all dashes omitted, of one of the listed types. It is the
+  // `uuid_types` rule applied to the trimmed form: the version and the variant
+  // fields are checked, and an empty list means no restriction. If the field
+  // value isn't a trimmed UUID of a listed type, an error message will be
+  // generated.
+  //
+  // ```proto
+  // message MyString {
+  //   // must be a trimmed UUIDv4
+  //   string value = 1 [(buf.validate.field).string.tuuid_types = UUID_V4];
+  // }
+  // ```
+  repeated Uuid tuuid_types = 40 [
+    (predefined).cel = {
+      id: "string.tuuid_types"
+      message: "must be a trimmed UUID of an allowed type"
+      expression:
+        "rules.tuuid_types.size() == 0 || this == '' || rules.tuuid_types.exists(t,"
+        "t == 9 ? this.matches('^0{32}$') :"
+        "t == 10 ? this.matches('^[fF]{32}$') :"
+        "t >= 1 && t <= 8 && this.matches('^[0-9a-fA-F]{12}' + string(t) + '[0-9a-fA-F]{3}[89abAB][0-9a-fA-F]{15}$'))"
+    },
+    (predefined).cel = {
+      id: "string.tuuid_types_empty"
+      message: "value is empty, which is not a valid trimmed UUID"
+      expression: "rules.tuuid_types.size() == 0 || this != ''"
+    }
+  ];
+
   // `example` specifies values that the field may have. These values SHOULD
   // conform to other rules. `example` values will not impact validation
   // but may be used as helpful guidance on how to populate the given field.
@@ -3900,6 +3967,45 @@ enum KnownRegex {
 
   // HTTP header value as defined by [RFC 7230](https://datatracker.ietf.org/doc/html/rfc7230#section-3.2.4).
   KNOWN_REGEX_HTTP_HEADER_VALUE = 2;
+}
+
+// Uuid contains the UUID types defined by
+// [RFC 9562](https://www.rfc-editor.org/rfc/rfc9562#section-4). A versioned UUID
+// carries its version in the first character of the third group and the RFC 9562
+// variant (`8`, `9`, `a` or `b`) in the first character of the fourth group. The
+// Nil and Max UUIDs are special cases that follow neither rule.
+enum Uuid {
+  UUID_UNSPECIFIED = 0;
+
+  // Version 1, a [Gregorian time-based UUID](https://www.rfc-editor.org/rfc/rfc9562#section-5.1).
+  UUID_V1 = 1;
+
+  // Version 2, a [DCE Security UUID](https://www.rfc-editor.org/rfc/rfc9562#section-5.2).
+  UUID_V2 = 2;
+
+  // Version 3, a [name-based UUID using MD5](https://www.rfc-editor.org/rfc/rfc9562#section-5.3).
+  UUID_V3 = 3;
+
+  // Version 4, a [random UUID](https://www.rfc-editor.org/rfc/rfc9562#section-5.4).
+  UUID_V4 = 4;
+
+  // Version 5, a [name-based UUID using SHA-1](https://www.rfc-editor.org/rfc/rfc9562#section-5.5).
+  UUID_V5 = 5;
+
+  // Version 6, a [reordered Gregorian time-based UUID](https://www.rfc-editor.org/rfc/rfc9562#section-5.6).
+  UUID_V6 = 6;
+
+  // Version 7, a [Unix epoch time-based UUID](https://www.rfc-editor.org/rfc/rfc9562#section-5.7).
+  UUID_V7 = 7;
+
+  // Version 8, a [custom UUID](https://www.rfc-editor.org/rfc/rfc9562#section-5.8).
+  UUID_V8 = 8;
+
+  // The [Nil UUID](https://www.rfc-editor.org/rfc/rfc9562#section-5.9), all bits set to zero.
+  UUID_NIL = 9;
+
+  // The [Max UUID](https://www.rfc-editor.org/rfc/rfc9562#section-5.10), all bits set to one.
+  UUID_MAX = 10;
 }
 
 // BytesRules describe the rules applied to `bytes` values. These rules

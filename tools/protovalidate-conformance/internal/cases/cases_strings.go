@@ -1402,6 +1402,156 @@ func stringSuite() suites.Suite {
 				},
 			),
 		},
+		"uuid_types/valid/v4/lowercase": {
+			Message:  &cases.StringUUIDTypesV4{Val: "8b208305-00e8-4460-a440-5e0dcd83bb0a"},
+			Expected: results.Success(true),
+		},
+		"uuid_types/valid/v4/uppercase": {
+			Message:  &cases.StringUUIDTypesV4{Val: "8B208305-00E8-4460-A440-5E0DCD83BB0A"},
+			Expected: results.Success(true),
+		},
+		"uuid_types/valid/v4_or_v7/v4": {
+			Message:  &cases.StringUUIDTypesV4OrV7{Val: "8b208305-00e8-4460-a440-5e0dcd83bb0a"},
+			Expected: results.Success(true),
+		},
+		"uuid_types/valid/v4_or_v7/v7": {
+			Message:  &cases.StringUUIDTypesV4OrV7{Val: "017f22e2-79b0-7cc3-98c4-dc0c0c07398f"},
+			Expected: results.Success(true),
+		},
+		"uuid_types/valid/nil_or_max/nil": {
+			Message:  &cases.StringUUIDTypesNilOrMax{Val: "00000000-0000-0000-0000-000000000000"},
+			Expected: results.Success(true),
+		},
+		"uuid_types/valid/nil_or_max/max/lowercase": {
+			Message:  &cases.StringUUIDTypesNilOrMax{Val: "ffffffff-ffff-ffff-ffff-ffffffffffff"},
+			Expected: results.Success(true),
+		},
+		"uuid_types/valid/nil_or_max/max/uppercase": {
+			Message:  &cases.StringUUIDTypesNilOrMax{Val: "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF"},
+			Expected: results.Success(true),
+		},
+		"uuid_types/invalid/wrong_version": {
+			Message: &cases.StringUUIDTypesV4{Val: "017f22e2-79b0-7cc3-98c4-dc0c0c07398f"},
+			Expected: results.Violations(
+				&validate.Violation{
+					Field:  results.FieldPath("val"),
+					Rule:   results.FieldPath("string.uuid_types"),
+					RuleId: proto.String("string.uuid_types"),
+				},
+			),
+		},
+		"uuid_types/invalid/wrong_variant": {
+			Message: &cases.StringUUIDTypesV4{Val: "8b208305-00e8-4460-c440-5e0dcd83bb0a"},
+			Expected: results.Violations(
+				&validate.Violation{
+					Field:  results.FieldPath("val"),
+					Rule:   results.FieldPath("string.uuid_types"),
+					RuleId: proto.String("string.uuid_types"),
+				},
+			),
+		},
+		"uuid_types/invalid/v4_or_v7/v1": {
+			Message: &cases.StringUUIDTypesV4OrV7{Val: "b45c0c80-8880-11e9-a5b1-000000000000"},
+			Expected: results.Violations(
+				&validate.Violation{
+					Field:  results.FieldPath("val"),
+					Rule:   results.FieldPath("string.uuid_types"),
+					RuleId: proto.String("string.uuid_types"),
+				},
+			),
+		},
+		"uuid_types/invalid/nil_or_max/v4": {
+			Message: &cases.StringUUIDTypesNilOrMax{Val: "8b208305-00e8-4460-a440-5e0dcd83bb0a"},
+			Expected: results.Violations(
+				&validate.Violation{
+					Field:  results.FieldPath("val"),
+					Rule:   results.FieldPath("string.uuid_types"),
+					RuleId: proto.String("string.uuid_types"),
+				},
+			),
+		},
+		"uuid_types/invalid/unspecified": {
+			Message: &cases.StringUUIDTypesEmpty{Val: "8b208305-00e8-4460-a440-5e0dcd83bb0a"},
+			Expected: results.Violations(
+				&validate.Violation{
+					Field:  results.FieldPath("val"),
+					Rule:   results.FieldPath("string.uuid_types"),
+					RuleId: proto.String("string.uuid_types"),
+				},
+			),
+		},
+		"uuid_types/invalid/malformed": {
+			Message: &cases.StringUUIDTypesV4{Val: "foobar"},
+			Expected: results.Violations(
+				&validate.Violation{
+					Field:  results.FieldPath("val"),
+					Rule:   results.FieldPath("string.uuid_types"),
+					RuleId: proto.String("string.uuid_types"),
+				},
+			),
+		},
+		"uuid_types/invalid/empty": {
+			Message: &cases.StringUUIDTypesV4{Val: ""},
+			Expected: results.Violations(
+				&validate.Violation{
+					Field:  results.FieldPath("val"),
+					Rule:   results.FieldPath("string.uuid_types"),
+					RuleId: proto.String("string.uuid_types_empty"),
+				},
+			),
+		},
+		"tuuid_types/valid/v4/lowercase": {
+			Message:  &cases.StringTUUIDTypesV4{Val: "8b20830500e84460a4405e0dcd83bb0a"},
+			Expected: results.Success(true),
+		},
+		"tuuid_types/valid/v4/uppercase": {
+			Message:  &cases.StringTUUIDTypesV4{Val: "8B20830500E84460A4405E0DCD83BB0A"},
+			Expected: results.Success(true),
+		},
+		"tuuid_types/valid/v4_or_v7/v7": {
+			Message:  &cases.StringTUUIDTypesV4OrV7{Val: "017f22e279b07cc398c4dc0c0c07398f"},
+			Expected: results.Success(true),
+		},
+		"tuuid_types/invalid/wrong_version": {
+			Message: &cases.StringTUUIDTypesV4{Val: "017f22e279b07cc398c4dc0c0c07398f"},
+			Expected: results.Violations(
+				&validate.Violation{
+					Field:  results.FieldPath("val"),
+					Rule:   results.FieldPath("string.tuuid_types"),
+					RuleId: proto.String("string.tuuid_types"),
+				},
+			),
+		},
+		"tuuid_types/invalid/wrong_variant": {
+			Message: &cases.StringTUUIDTypesV4{Val: "8b20830500e84460c4405e0dcd83bb0a"},
+			Expected: results.Violations(
+				&validate.Violation{
+					Field:  results.FieldPath("val"),
+					Rule:   results.FieldPath("string.tuuid_types"),
+					RuleId: proto.String("string.tuuid_types"),
+				},
+			),
+		},
+		"tuuid_types/invalid/dashful": {
+			Message: &cases.StringTUUIDTypesV4{Val: "8b208305-00e8-4460-a440-5e0dcd83bb0a"},
+			Expected: results.Violations(
+				&validate.Violation{
+					Field:  results.FieldPath("val"),
+					Rule:   results.FieldPath("string.tuuid_types"),
+					RuleId: proto.String("string.tuuid_types"),
+				},
+			),
+		},
+		"tuuid_types/invalid/empty": {
+			Message: &cases.StringTUUIDTypesV4{Val: ""},
+			Expected: results.Violations(
+				&validate.Violation{
+					Field:  results.FieldPath("val"),
+					Rule:   results.FieldPath("string.tuuid_types"),
+					RuleId: proto.String("string.tuuid_types_empty"),
+				},
+			),
+		},
 		"ulid/valid/lowercase": {
 			Message:  &cases.StringULID{Val: "01arz3ndektsv4rrffq69g5fav"},
 			Expected: results.Success(true),

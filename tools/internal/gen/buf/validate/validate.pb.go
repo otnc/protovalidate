@@ -275,7 +275,7 @@ func (KnownRegex) EnumDescriptor() ([]byte, []int) {
 }
 
 // Uuid contains the UUID types defined by
-// [RFC 9562](https://www.rfc-editor.org/rfc/rfc9562#section-4). A versioned UUID
+// [RFC 9562](https://datatracker.ietf.org/doc/html/rfc9562#section-4). A versioned UUID
 // carries its version in the first character of the third group and the RFC 9562
 // variant (`8`, `9`, `a` or `b`) in the first character of the fourth group. The
 // Nil and Max UUIDs are special cases that follow neither rule.
@@ -283,25 +283,25 @@ type Uuid int32
 
 const (
 	Uuid_UUID_UNSPECIFIED Uuid = 0
-	// Version 1, a [Gregorian time-based UUID](https://www.rfc-editor.org/rfc/rfc9562#section-5.1).
+	// Version 1, a [Gregorian time-based UUID](https://datatracker.ietf.org/doc/html/rfc9562#section-5.1).
 	Uuid_UUID_V1 Uuid = 1
-	// Version 2, a [DCE Security UUID](https://www.rfc-editor.org/rfc/rfc9562#section-5.2).
+	// Version 2, a [DCE Security UUID](https://datatracker.ietf.org/doc/html/rfc9562#section-5.2).
 	Uuid_UUID_V2 Uuid = 2
-	// Version 3, a [name-based UUID using MD5](https://www.rfc-editor.org/rfc/rfc9562#section-5.3).
+	// Version 3, a [name-based UUID using MD5](https://datatracker.ietf.org/doc/html/rfc9562#section-5.3).
 	Uuid_UUID_V3 Uuid = 3
-	// Version 4, a [random UUID](https://www.rfc-editor.org/rfc/rfc9562#section-5.4).
+	// Version 4, a [random UUID](https://datatracker.ietf.org/doc/html/rfc9562#section-5.4).
 	Uuid_UUID_V4 Uuid = 4
-	// Version 5, a [name-based UUID using SHA-1](https://www.rfc-editor.org/rfc/rfc9562#section-5.5).
+	// Version 5, a [name-based UUID using SHA-1](https://datatracker.ietf.org/doc/html/rfc9562#section-5.5).
 	Uuid_UUID_V5 Uuid = 5
-	// Version 6, a [reordered Gregorian time-based UUID](https://www.rfc-editor.org/rfc/rfc9562#section-5.6).
+	// Version 6, a [reordered Gregorian time-based UUID](https://datatracker.ietf.org/doc/html/rfc9562#section-5.6).
 	Uuid_UUID_V6 Uuid = 6
-	// Version 7, a [Unix epoch time-based UUID](https://www.rfc-editor.org/rfc/rfc9562#section-5.7).
+	// Version 7, a [Unix epoch time-based UUID](https://datatracker.ietf.org/doc/html/rfc9562#section-5.7).
 	Uuid_UUID_V7 Uuid = 7
-	// Version 8, a [custom UUID](https://www.rfc-editor.org/rfc/rfc9562#section-5.8).
+	// Version 8, a [custom UUID](https://datatracker.ietf.org/doc/html/rfc9562#section-5.8).
 	Uuid_UUID_V8 Uuid = 8
-	// The [Nil UUID](https://www.rfc-editor.org/rfc/rfc9562#section-5.9), all bits set to zero.
+	// The [Nil UUID](https://datatracker.ietf.org/doc/html/rfc9562#section-5.9), all bits set to zero.
 	Uuid_UUID_NIL Uuid = 9
-	// The [Max UUID](https://www.rfc-editor.org/rfc/rfc9562#section-5.10), all bits set to one.
+	// The [Max UUID](https://datatracker.ietf.org/doc/html/rfc9562#section-5.10), all bits set to one.
 	Uuid_UUID_MAX Uuid = 10
 )
 
@@ -4960,7 +4960,7 @@ type StringRules struct {
 	// `uuid_types` specifies that the field value must be a UUID of one of the
 	// listed types. Unlike `uuid`, which only enforces the textual shape, this
 	// checks the version and the variant fields defined by
-	// [RFC 9562](https://www.rfc-editor.org/rfc/rfc9562#section-4): a versioned
+	// [RFC 9562](https://datatracker.ietf.org/doc/html/rfc9562#section-4): a versioned
 	// UUID must carry the RFC 9562 variant (`8`, `9`, `a` or `b`), while the Nil
 	// and Max UUIDs follow neither rule. An empty list means no restriction. If the
 	// field value isn't a UUID of a listed type, an error message will be

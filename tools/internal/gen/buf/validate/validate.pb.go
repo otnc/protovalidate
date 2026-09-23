@@ -5387,7 +5387,7 @@ type StringRules_Address struct {
 type StringRules_Uuid struct {
 	// `uuid` specifies that the field value must have the textual shape of a
 	// UUID as defined by
-	// [RFC 9562](https://www.rfc-editor.org/rfc/rfc9562#section-4): 32
+	// [RFC 9562](https://datatracker.ietf.org/doc/html/rfc9562#section-4): 32
 	// hexadecimal digits in five dash-separated groups. Only the shape is
 	// enforced, so that UUID versions defined in the future are not rejected:
 	// the version and variant fields are not checked. If the field value isn't
@@ -5407,7 +5407,7 @@ type StringRules_Uuid struct {
 type StringRules_Tuuid struct {
 	// `tuuid` (trimmed UUID) specifies that the field value must have the
 	// textual shape of a UUID as defined by
-	// [RFC 9562](https://www.rfc-editor.org/rfc/rfc9562#section-4) with all
+	// [RFC 9562](https://datatracker.ietf.org/doc/html/rfc9562#section-4) with all
 	// dashes omitted: 32 hexadecimal digits. Only the shape is enforced, so
 	// that UUID versions defined in the future are not rejected: the version
 	// and variant fields are not checked. If the field value isn't shaped like
